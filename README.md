@@ -49,13 +49,35 @@ OPENAI_API_KEY=your_openai_api_key_here
 ### Add Documents
 Place your `.txt` files in the `docs/` folder. Each file is treated as a single document.
 
-### Run the API
+### Run the API (local)
 uvicorn will start the FastAPI app and the `load_docs.py` import will build the FAISS index at startup.
 ```bash
 uvicorn app.main:app --reload
 ```
 
 API will be available at `http://127.0.0.1:8000`. Open the interactive docs at `http://127.0.0.1:8000/docs`.
+
+### Run with Docker
+Build the image:
+```bash
+docker build -t rag-docs-qna .
+```
+
+Run the container (pass your API key and mount `docs/` so you can edit without rebuilding):
+```bash
+docker run --rm -p 8000:8000 \
+  -e OPENAI_API_KEY=$OPENAI_API_KEY \
+  -v $(pwd)/docs:/app/docs \
+  rag-docs-qna
+```
+
+On Windows PowerShell, use:
+```powershell
+docker run --rm -p 8000:8000 `
+  -e OPENAI_API_KEY=$Env:OPENAI_API_KEY `
+  -v ${PWD}/docs:/app/docs `
+  rag-docs-qna
+```
 
 ### Query the API
 POST `http://127.0.0.1:8000/query`
@@ -75,6 +97,7 @@ Response:
 - Windows FAISS: `requirements.txt` includes a Windows-compatible wheel source and conditional pins.
 - Embedding model: `all-MiniLM-L6-v2` (384-dim). Make sure `DIM` in `faiss_index.py` matches.
 - Startup behavior: `load_docs.py` runs at import time, embedding all files under `docs/` and building the index. Restart the server after changing documents.
+ - Docker: `.dockerignore` excludes common local-only files (including `.env`). Provide `OPENAI_API_KEY` with `-e` when running the container.
 
 ### Development Tips
 - If you add many/large docs, consider chunking and caching embeddings.
