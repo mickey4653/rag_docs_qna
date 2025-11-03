@@ -1,6 +1,6 @@
 import os
-from embeddings import embed_text
-from faiss_index import add_vectors
+from .embeddings import embed_text
+from .faiss_index import add_vectors
 
 docs_folder = "docs"
 docs = []

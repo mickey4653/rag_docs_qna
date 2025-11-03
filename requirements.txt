@@ -4,8 +4,9 @@ fastapi==0.115.3
 uvicorn==0.30.0
 requests==2.32.3
 torch==2.4.0
-sentence-transformers==2.2.2
-openai==1.10.0
+sentence-transformers==2.3.0
+openai>=1.51.0
+httpx>=0.24.0
 python-dotenv==1.0.0
 
 faiss-cpu==1.7.4 ; platform_system != "Windows"
