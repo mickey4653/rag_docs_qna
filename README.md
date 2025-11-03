@@ -13,7 +13,7 @@ app/
   embeddings.py        # loads sentence-transformers model and creates embeddings
   faiss_index.py       # FAISS index helpers (add/search)
   load_docs.py         # loads docs/, embeds, and builds the index
-  main.py              # FastAPI app exposing /query
+  main.py              # FastAPI app exposing /, /health, /query
 docs/
   *.txt                # your source documents
 ```
@@ -22,6 +22,7 @@ docs/
 - Python 3.10+
 - Internet access to download the embedding model and FAISS wheels
 - An OpenAI API key (set `OPENAI_API_KEY`)
+  - Ensure your OpenAI account has an active plan/credits to avoid 429 insufficient_quota errors
 
 ### Installation
 1. Create and activate a virtual environment (recommended)
@@ -56,6 +57,10 @@ uvicorn app.main:app --reload
 ```
 
 API will be available at `http://127.0.0.1:8000`. Open the interactive docs at `http://127.0.0.1:8000/docs`.
+Useful endpoints:
+- `GET /` basic status
+- `GET /health` health check
+- `POST /query` ask a question
 
 ### Run with Docker
 Build the image:
@@ -93,11 +98,19 @@ Response:
 }
 ```
 
+If you see HTTP 429 with details about quota, add credits to your OpenAI account or reduce request volume. The server maps common OpenAI errors to HTTP responses (401 auth, 429 quota, 502 upstream errors) instead of returning a generic 500.
+
 ### Notes
 - Windows FAISS: `requirements.txt` includes a Windows-compatible wheel source and conditional pins.
 - Embedding model: `all-MiniLM-L6-v2` (384-dim). Make sure `DIM` in `faiss_index.py` matches.
 - Startup behavior: `load_docs.py` runs at import time, embedding all files under `docs/` and building the index. Restart the server after changing documents.
  - Docker: `.dockerignore` excludes common local-only files (including `.env`). Provide `OPENAI_API_KEY` with `-e` when running the container.
+
+### Dependencies
+Key versions (see `requirements.txt`):
+- `sentence-transformers==2.3.0`
+- `openai>=1.51.0` (uses the new `OpenAI` client)
+- `httpx>=0.24.0`
 
 ### Development Tips
 - If you add many/large docs, consider chunking and caching embeddings.
