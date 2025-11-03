@@ -1,0 +1,12 @@
+--find-links https://github.com/kyamagu/faiss-wheels/releases/
+
+fastapi==0.115.3
+uvicorn==0.30.0
+requests==2.32.3
+torch==2.4.0
+sentence-transformers==2.2.2
+openai==1.10.0
+python-dotenv==1.0.0
+
+faiss-cpu==1.7.4 ; platform_system != "Windows"
+faiss-cpu>=1.8.0 ; platform_system == "Windows"

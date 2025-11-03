@@ -1,0 +1,60 @@
+# ------------------------------
+# Python
+# ------------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+*.db
+*.DS_Store
+
+# Virtual environments
+.env/
+.venv/
+venv/
+ENV/
+env.bak/
+
+# ------------------------------
+# Environment / Config files
+# ------------------------------
+.env
+*.env
+*.ini
+*.yaml
+*.yml
+
+# ------------------------------
+# Bytecode / cache
+# ------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ------------------------------
+# Build / Distribution
+# ------------------------------
+build/
+dist/
+*.egg-info/
+
+# ------------------------------
+# IDE / Editor settings
+# ------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ------------------------------
+# Docker
+# ------------------------------
+docker-compose.override.yml
+*.pid
+
+# ------------------------------
+# Jupyter / Notebook
+# ------------------------------
+.ipynb_checkpoints/
